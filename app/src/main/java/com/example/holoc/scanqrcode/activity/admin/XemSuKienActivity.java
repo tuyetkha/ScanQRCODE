@@ -414,7 +414,7 @@ public class XemSuKienActivity extends AppCompatActivity {
 
        //         return false;
        //     }
-
+/****/
          //   @Override
         //    public boolean onQueryTextChange(String s) {
             /*    listview_search = (ListView) findViewById(R.id.listview_search);
