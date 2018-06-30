@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -40,10 +41,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class XemSuKienActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class XemSuKienActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -57,6 +59,9 @@ public class XemSuKienActivity extends AppCompatActivity implements SearchView.O
     private EditText tgketthuc;
     private SuKien sukien;
     private int madv;
+    private ArrayAdapter<String> adapter_search;
+    private ArrayList<String> mangtensk;
+    private ListView listview_search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +78,7 @@ public class XemSuKienActivity extends AppCompatActivity implements SearchView.O
         mdv = new ArrayList<DonVi>();
         mangtendv = new ArrayList<String>();
         mangtamsk = new ArrayList<SuKien>();
+        mangtensk = new ArrayList<>();
 
         myRef.addValueEventListener(new ValueEventListener() {
 
@@ -82,6 +88,7 @@ public class XemSuKienActivity extends AppCompatActivity implements SearchView.O
                 msk.clear();
                 mangtendv.clear();
                 mangtamsk.clear();
+                mangtensk.clear();
                 for (DataSnapshot item : dataSnapshot.child("donvi").getChildren()) {
 
                     String tendv = item.child("tendv").getValue(String.class);
@@ -99,8 +106,8 @@ public class XemSuKienActivity extends AppCompatActivity implements SearchView.O
                     String tgbatdau = item.child("tgbatdau").getValue(String.class);
                     String tgketthuc = item.child("tgketthuc").getValue(String.class);
                     String chuthich = item.child("chuthich").getValue(String.class);
-                    ArrayList<DanhSachDiemDanh> mangmssv= new ArrayList<DanhSachDiemDanh>();
-
+                 //   ArrayList<DanhSachDiemDanh> mangmssv= new ArrayList<DanhSachDiemDanh>();
+                    mangtensk.add(tensk);
                     final SuKien sukien1 = new SuKien(key,tensk,mdv.get(madv-1).getTendv().toString(),ngay, tgbatdau, tgketthuc, chuthich);
                     mangtamsk.add(sukien1);
                 }
@@ -398,9 +405,36 @@ public class XemSuKienActivity extends AppCompatActivity implements SearchView.O
         // khởi tạo menu
         getMenuInflater().inflate(R.menu.menu_search,menu);
         MenuItem item = menu.findItem(R.id.search_view);
-        SearchView searchView = (SearchView)item.getActionView();
-      //  return super.onCreateOptionsMenu(menu);
-        return true;
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+      //  SearchView searchView = (SearchView)item.getActionView();
+    //    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+     //       @Override
+     //       public boolean onQueryTextSubmit(String query) {
+
+
+       //         return false;
+       //     }
+
+         //   @Override
+        //    public boolean onQueryTextChange(String s) {
+            /*    listview_search = (ListView) findViewById(R.id.listview_search);
+                ArrayList<String> array_sukien = new ArrayList<String>();
+                array_sukien.addAll(Arrays.asList(getResources().getStringArray(R.array.my_event)));
+                adapter_search = new ArrayAdapter<String>(
+                        XemSuKienActivity.this,
+                        android.R.layout.simple_list_item_1,
+                        array_sukien
+                );
+                listview_search.setAdapter(adapter_search);
+                adapter_search.getFilter().filter(s);
+*/
+        //        return false;
+        //    }
+       // });
+
+
+        return super.onCreateOptionsMenu(menu);
+      //  return true;
 
     }
     // bắt sự kiện cho search
@@ -421,14 +455,5 @@ public class XemSuKienActivity extends AppCompatActivity implements SearchView.O
     }
 
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        Log.d("",newText);
-        return false;
-    }
 }
